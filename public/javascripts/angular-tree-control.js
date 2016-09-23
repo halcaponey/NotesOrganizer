@@ -80,7 +80,7 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
         ensureDefault($scope.options, "allowDeselect", true);
         ensureDefault($scope.options, "isSelectable", defaultIsSelectable);
     }
-    
+
     angular.module( 'treeControl', [] )
         .constant('treeConfig', {
             templateUrl: null
@@ -100,9 +100,9 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                 else
                     return "";
             }
-            
-            
-            
+
+
+
             return {
                 restrict: 'EA',
                 require: "treecontrol",
@@ -121,11 +121,11 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                     filterComparator: "=?"
                 },
                 controller: ['$scope', '$templateCache', '$interpolate', 'treeConfig', function ($scope, $templateCache, $interpolate, treeConfig) {
-                    
+
                     $scope.options = $scope.options || {};
-                    
+
                     ensureAllDefaultOptions($scope);
-                  
+
                     $scope.selectedNodes = $scope.selectedNodes || [];
                     $scope.expandedNodes = $scope.expandedNodes || [];
                     $scope.expandedNodesMap = {};
@@ -273,7 +273,10 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                     $scope.orderByFunc = function() {
                       return $scope.orderBy;
                     };
-//                    return "" + $scope.orderBy;
+
+                    $scope.deleteCat = function(id) {
+                      return id;
+                    };
 
                     var templateOptions = {
                         orderBy: $scope.orderBy ? " | orderBy:orderByFunc():isReverse()" : '',
@@ -298,7 +301,16 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                             'set-node-to-data>' +
                             '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
                             '<i class="tree-leaf-head {{options.iLeafClass}}"></i>' +
-                            '<div class="tree-label {{options.labelClass}}" ng-class="[selectedClass(), unselectableClass()]" ng-click="selectNodeLabel(node)" tree-transclude></div>' +
+                            '<h3 class="tree-label {{options.labelClass}}" ng-class="[selectedClass(), unselectableClass()]" ng-click="selectNodeLabel(node)" tree-transclude></h3>' +
+                            '<md-button aria-label="Add" ng-click="" class="md-icon-button">'+
+                            '<md-icon md-svg-src="public/images/ic_add_black_48px.svg"></md-icon>'+
+                            '</md-button>'+
+                            '<md-button aria-label="Edit" ng-click="" class="md-icon-button">'+
+                            '<md-icon md-svg-src="public/images/ic_create_black_48px.svg"></md-icon>'+
+                            '</md-button>'+
+                            '<md-button aria-label="Delete" ng-click="deleteCat(node.id)" class="md-icon-button">'+
+                            '<md-icon md-svg-src="public/images/ic_delete_black_48px.svg"></md-icon>'+
+                            '</md-button>'+
                             '<treeitem ng-if="nodeExpanded()"></treeitem>' +
                             '</li>' +
                             '</ul>';

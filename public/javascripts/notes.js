@@ -3,7 +3,7 @@ app.controller('notes', function notes($scope, $location, $http) {
   $scope.notes = {};
 
   $scope.showCat = true;
-  
+
   $scope.showNoteAddModify = true;
 
   $scope.cat = [];
@@ -13,6 +13,7 @@ app.controller('notes', function notes($scope, $location, $http) {
   $scope.idNotesEdit = -1;
 
   $scope.treeOptions = {multiSelection: true};
+
   $scope.selectedNodes = [];
 
   function searchTree(element, matchingId){
@@ -29,6 +30,9 @@ app.controller('notes', function notes($scope, $location, $http) {
      return null;
   }
 
+  $scope.deleteCat = function(note){
+    console.log(node);
+  }
   $scope.edit = function(note){
     $scope.idNotesEdit = note.id;
     $scope.title = note.title;

@@ -45,6 +45,11 @@
                  options="treeOptions">
                  {{node.name}}
               </treecontrol>
+
+              <md-button ng-show="showCat" aria-label="Add" ng-click="" class="md-icon-button">
+                <md-icon md-svg-src="public\images\ic_add_black_48px.svg"></md-icon>
+              </md-button>
+
               <div class="space-between" ng-show="showCat"></div>
               <div>
                 Selected categories :
