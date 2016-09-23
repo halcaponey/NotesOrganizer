@@ -1,0 +1,66 @@
+html, body{
+  min-height: 100%;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
+  background-color: #f05a39;
+}
+
+.orange-text{
+  color: #f05a39;
+}
+
+.black-text{
+  color: #4a3c3b;
+}
+
+.md-menu{
+  padding: 0;
+}
+
+.login-card{
+  width: 30%;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input {
+    border-color: #f05a39;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused label{
+  color: #f05a39;
+}
+
+.btn-login {
+  opacity: 1;
+  background-color: #f05a39 !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+.btn-login:hover {
+  opacity: 0.85;
+}
+
+md-checkbox.md-checked ._md-icon {
+ background-color: #f05a39;
+}
+
+md-progress-linear.md-default-theme ._md-container, md-progress-linear ._md-container {
+  background-color: #fbd8d0;
+}
+
+md-progress-linear.md-default-theme ._md-bar, md-progress-linear ._md-bar {
+  background-color: #f05a39;
+}
+
+md-input-container.no-margin-bottom{
+  margin-bottom: 0;
+}
+
+.cat{
+  color: #9fb18b;
+  margin: 15px;
+}
+
+.space-between{
+  padding: 25px;
+}
