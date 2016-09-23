@@ -11,8 +11,7 @@
       <md-content layout-fill="layout-fill">
         <md-toolbar md-whiteframe="5">
           <div class="md-toolbar-tools">
-            <h2>Notes</h2><span flex=""></span>
-            <md-button aria-label="Downloads" href="/downloads">Categories</md-button>
+            <h2>Notes organizer</h2><span flex=""></span>
           </div>
         </md-toolbar>
 
