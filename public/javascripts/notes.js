@@ -16,6 +16,10 @@ app.controller('notes', function notes($scope, $location, $http) {
 
   $scope.selectedNodes = [];
 
+  $scope.addCat = function(/*TODO*/){
+
+  }
+
   $scope.$on('tree:add.node', function(event, node) {
     console.log(node);
   });
@@ -24,8 +28,11 @@ app.controller('notes', function notes($scope, $location, $http) {
     console.log(node);
   });
 
+  //automaticly reparent in php
   $scope.$on('tree:delete.node', function(event, node) {
-    console.log(node);
+    $http.delete($location.path() + 'categories-ws.php?id='+node.id+'&id_parent='+node.id_parent).success(function(resp) {
+      $scope.update();
+    });
   });
 
   function searchTree(element, matchingId){

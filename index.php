@@ -47,7 +47,7 @@
               </treecontrol>
 
               <md-button ng-show="showCat" aria-label="Add" ng-click="" class="md-icon-button">
-                <md-icon md-svg-src="public\images\ic_add_black_48px.svg"></md-icon>
+                <md-icon md-svg-src="public/images/ic_add_black_48px.svg"></md-icon>
               </md-button>
 
               <div class="space-between" ng-show="showCat"></div>
@@ -82,11 +82,11 @@
               <md-divider></md-divider>
               <md-card-actions layout="row" layout-align="space-between stretch">
                 <md-button aria-label="Edit" ng-click="edit(note)" class="md-icon-button">
-                  <md-icon md-svg-src="public\images\ic_create_black_48px.svg"></md-icon>
+                  <md-icon md-svg-src="public/images/ic_create_black_48px.svg"></md-icon>
                 </md-button>
 
                 <md-button aria-label="Delete" ng-click="delete(note.id)" class="md-icon-button">
-                  <md-icon md-svg-src="public\images\ic_delete_black_48px.svg"></md-icon>
+                  <md-icon md-svg-src="public/images/ic_delete_black_48px.svg"></md-icon>
                 </md-button>
               </md-card-actions>
             </md-card>

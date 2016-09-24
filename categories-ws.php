@@ -13,10 +13,45 @@ switch ($method) {
   case 'PUT':
     break;
   case 'DELETE':
+    if (array_key_exists("id", $_GET)){
+      delete_by_id($_GET['id'], $_GET['id_parent']);
+    }
     break;
   default:
     handle_error($request);
     break;
+}
+
+
+function delete_by_id($id, $id_parent){
+  if ($id_parent == 'null') {
+    $id_parent = null;
+  }
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $bdname = "note_organizer";
+  try {
+    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $conn->prepare("DELETE FROM note_categorie WHERE id_categorie = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("UPDATE categorie SET id_parent=:id_parent WHERE id_parent=:id;");
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':id_parent', $id_parent);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("DELETE FROM categorie WHERE id = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    $conn = null;
+  }catch(PDOException $e){
+    echo "Connection failed: " . $e->getMessage();
+  }
 }
 
 function get_all(){

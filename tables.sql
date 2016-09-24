@@ -59,5 +59,5 @@ ALTER TABLE note_categorie ADD CONSTRAINT FK_note_categorie_id_categorie FOREIGN
 #------------------------------------------------------------
 
 INSERT INTO note (id, title, description) VALUES (1, "oui", "oui"), (2, "non", "non");
-INSERT INTO categorie (id, name, id_parent) VALUES (1, "oui ou non", NULL), (2, "oui", 1);
+INSERT INTO categorie (id, name, id_parent) VALUES (1, "oui ou non", NULL), (2, "oui", 1), (3, "enfin peut etre", 2);
 INSERT INTO note_categorie (id_note, id_categorie) VALUES (1, 2), (2, 1), (1, 1);
