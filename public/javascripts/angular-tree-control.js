@@ -79,6 +79,8 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
         ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
         ensureDefault($scope.options, "allowDeselect", true);
         ensureDefault($scope.options, "isSelectable", defaultIsSelectable);
+        //modif
+        ensureDefault($scope.options, "addModDel", false);
     }
 
     angular.module( 'treeControl', [] )
@@ -120,7 +122,8 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                     filterExpression: "=?",
                     filterComparator: "=?"
                 },
-                controller: ['$scope', '$templateCache', '$interpolate', 'treeConfig', function ($scope, $templateCache, $interpolate, treeConfig) {
+                //modif : added rootScope
+                controller: ['$scope', '$rootScope', '$templateCache', '$interpolate', 'treeConfig', function ($scope, $rootScope, $templateCache, $interpolate, treeConfig) {
 
                     $scope.options = $scope.options || {};
 
@@ -273,9 +276,17 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                     $scope.orderByFunc = function() {
                       return $scope.orderBy;
                     };
+                    //modif
+                    $scope.add = function(node) {
+                      $rootScope.$broadcast('tree:add.node', node);
+                    };
 
-                    $scope.deleteCat = function(id) {
-                      return id;
+                    $scope.edit = function(node) {
+                      $rootScope.$broadcast('tree:edit.node', node);
+                    };
+
+                    $scope.delete = function(node) {
+                      $rootScope.$broadcast('tree:delete.node', node);
                     };
 
                     var templateOptions = {
@@ -301,16 +312,22 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
                             'set-node-to-data>' +
                             '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
                             '<i class="tree-leaf-head {{options.iLeafClass}}"></i>' +
-                            '<h3 class="tree-label {{options.labelClass}}" ng-class="[selectedClass(), unselectableClass()]" ng-click="selectNodeLabel(node)" tree-transclude></h3>' +
-                            '<md-button aria-label="Add" ng-click="" class="md-icon-button">'+
-                            '<md-icon md-svg-src="public/images/ic_add_black_48px.svg"></md-icon>'+
-                            '</md-button>'+
-                            '<md-button aria-label="Edit" ng-click="" class="md-icon-button">'+
-                            '<md-icon md-svg-src="public/images/ic_create_black_48px.svg"></md-icon>'+
-                            '</md-button>'+
-                            '<md-button aria-label="Delete" ng-click="deleteCat(node.id)" class="md-icon-button">'+
-                            '<md-icon md-svg-src="public/images/ic_delete_black_48px.svg"></md-icon>'+
-                            '</md-button>'+
+                            '<h3 class="tree-label {{options.labelClass}}" ng-class="[selectedClass(), unselectableClass()]" ng-click="selectNodeLabel(node)" tree-transclude></h3>';
+                            //modif
+                            if ($scope.options.addModDel){
+                              template +=
+                              '<md-button aria-label="Add" ng-click="add(node)" class="md-icon-button">'+
+                              '<md-icon md-svg-src="public/images/ic_add_black_48px.svg"></md-icon>'+
+                              '</md-button>'+
+                              '<md-button aria-label="Edit" ng-click="edit(node)" class="md-icon-button">'+
+                              '<md-icon md-svg-src="public/images/ic_create_black_48px.svg"></md-icon>'+
+                              '</md-button>'+
+                              '<md-button aria-label="Delete" ng-click="delete(node)" class="md-icon-button">'+
+                              '<md-icon md-svg-src="public/images/ic_delete_black_48px.svg"></md-icon>'+
+                              '</md-button>';
+                            }
+                            template +=
+                            //endmodif
                             '<treeitem ng-if="nodeExpanded()"></treeitem>' +
                             '</li>' +
                             '</ul>';

@@ -12,9 +12,21 @@ app.controller('notes', function notes($scope, $location, $http) {
 
   $scope.idNotesEdit = -1;
 
-  $scope.treeOptions = {multiSelection: true};
+  $scope.treeOptions = {multiSelection: true, addModDel: true};
 
   $scope.selectedNodes = [];
+
+  $scope.$on('tree:add.node', function(event, node) {
+    console.log(node);
+  });
+
+  $scope.$on('tree:edit.node', function(event, node) {
+    console.log(node);
+  });
+
+  $scope.$on('tree:delete.node', function(event, node) {
+    console.log(node);
+  });
 
   function searchTree(element, matchingId){
      if(element.id == matchingId){
