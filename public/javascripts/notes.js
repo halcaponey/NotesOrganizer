@@ -1,5 +1,5 @@
 var app = angular.module('note_organizer', ['ngMaterial', 'treeControl']);
-app.controller('notes', function notes($scope, $location, $http) {
+app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
   $scope.notes = {};
 
   $scope.showCat = true;
@@ -16,12 +16,29 @@ app.controller('notes', function notes($scope, $location, $http) {
 
   $scope.selectedNodes = [];
 
-  $scope.addCat = function(/*TODO*/){
-
+  $scope.addCat = function(cat){
+    var parentEl = angular.element(document.body);
+    $mdDialog.show({
+      parent: parentEl,
+      clickOutsideToClose: true,
+      templateUrl: $location.path() + 'add-categorie-dialog-template.php',
+      locals: {
+        name: ""
+      },
+      controller: DialogController
+    });
+    function DialogController($scope, $mdDialog, name) {
+      $scope.name = name;
+      $scope.add = function() {
+        console.log($scope.name);
+        console.log(cat.id);
+        $mdDialog.hide();
+      }
+    }
   }
 
   $scope.$on('tree:add.node', function(event, node) {
-    console.log(node);
+    $scope.addCat(node);
   });
 
   $scope.$on('tree:edit.node', function(event, node) {

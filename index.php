@@ -46,7 +46,7 @@
                  {{node.name}}
               </treecontrol>
 
-              <md-button ng-show="showCat" aria-label="Add" ng-click="" class="md-icon-button">
+              <md-button ng-show="showCat" aria-label="Add" ng-click="addCat({id:null})" class="md-icon-button">
                 <md-icon md-svg-src="public/images/ic_add_black_48px.svg"></md-icon>
               </md-button>
 
