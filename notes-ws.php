@@ -1,4 +1,5 @@
 <?php
+//notes webservice
 require('db_connection.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
