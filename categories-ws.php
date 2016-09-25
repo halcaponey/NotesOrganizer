@@ -1,4 +1,5 @@
 <?php
+require('db_connection.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -36,13 +37,9 @@ function modify($id, $name, $id_parent){
     $id_parent = null;
   }
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("UPDATE categorie SET name=:name, id_parent=:id_parent WHERE id=:id;");
     $stmt->bindParam(':id', $id);
@@ -60,14 +57,9 @@ function add($name, $id_parent){
   if ($id_parent == 'null') {
     $id_parent = null;
   }
-
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("INSERT INTO categorie (name, id_parent) VALUES (:name, :id_parent)");
     $stmt->bindParam(':name', $name);
@@ -85,13 +77,9 @@ function delete_by_id($id, $id_parent){
   if ($id_parent == 'null') {
     $id_parent = null;
   }
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("DELETE FROM note_categorie WHERE id_categorie = :id");
     $stmt->bindParam(':id', $id);
@@ -113,15 +101,9 @@ function delete_by_id($id, $id_parent){
 }
 
 function get_all(){
-
   try {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $bdname = "note_organizer";
-
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("SELECT * FROM categorie ORDER BY id_parent DESC");
     $stmt->execute();

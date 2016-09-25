@@ -1,4 +1,5 @@
 <?php
+require('db_connection.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -35,13 +36,9 @@ function modify($id, $title, $description, $categories){
     $description = "";
   }
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("UPDATE note SET title=:title, description=:description WHERE id=:id;");
     $stmt->bindParam(':id', $id);
@@ -74,13 +71,9 @@ function add($title, $description, $categories){
     $description = "";
   }
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("INSERT INTO note (title, description) VALUES (:title, :description)");
     $stmt->bindParam(':title', $title);
@@ -104,13 +97,9 @@ function add($title, $description, $categories){
 }
 
 function delete_by_id($id){
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $bdname = "note_organizer";
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("DELETE FROM note_categorie WHERE id_note = :id");
     $stmt->bindParam(':id', $id);
@@ -129,13 +118,8 @@ function delete_by_id($id){
 function get_all(){
 
   try {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $bdname = "note_organizer";
-
-    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbconn = DbConnection::getConnection();
+    $conn = $dbconn->_pdo;
 
     $stmt = $conn->prepare("SELECT * FROM note");
     $stmt->execute();
@@ -153,10 +137,8 @@ function get_all(){
       $result[$i]['categorie'] = $res;
     }
     echo json_encode($result);
-
-    $conn = null;
   }catch(PDOException $e){
-    //echo "Connection failed: " . $e->getMessage();
+    echo "Connection failed: " . $e->getMessage();
   }
 }
 ?>
