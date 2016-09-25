@@ -9,8 +9,17 @@ switch ($method) {
     }
     break;
   case 'POST':
+    $data = json_decode(file_get_contents("php://input"));
+    if ($data->name != null){
+       add($data->name, $data->id_parent);
+    }
     break;
   case 'PUT':
+    $data = json_decode(file_get_contents("php://input"));
+    //var_dump($data);
+    if ($data->id != null && $data->name != null){
+       modify($data->id, $data->name, $data->id_parent);
+    }
     break;
   case 'DELETE':
     if (array_key_exists("id", $_GET)){
@@ -20,6 +29,55 @@ switch ($method) {
   default:
     handle_error($request);
     break;
+}
+
+function modify($id, $name, $id_parent){
+  if ($id_parent == 'null') {
+    $id_parent = null;
+  }
+
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $bdname = "note_organizer";
+  try {
+    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $conn->prepare("UPDATE categorie SET name=:name, id_parent=:id_parent WHERE id=:id;");
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':id_parent', $id_parent);
+    $stmt->execute();
+
+    $conn = null;
+  }catch(PDOException $e){
+    echo "Connection failed: " . $e->getMessage();
+  }
+}
+
+function add($name, $id_parent){
+  if ($id_parent == 'null') {
+    $id_parent = null;
+  }
+
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $bdname = "note_organizer";
+  try {
+    $conn = new PDO("mysql:host=$servername;dbname=$bdname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $conn->prepare("INSERT INTO categorie (name, id_parent) VALUES (:name, :id_parent)");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':id_parent', $id_parent);
+    $stmt->execute();
+
+    $conn = null;
+  }catch(PDOException $e){
+    echo "Connection failed: " . $e->getMessage();
+  }
 }
 
 
@@ -77,7 +135,7 @@ function get_all(){
           if(!isset($result[$j]['children'])){
             $result[$j]['children'][0] = $result[$i];
           }else{
-            $result[$j]['children'][count($val->children)] = $result[$i];
+            $result[$j]['children'][count($result[$j]['children'])] = $result[$i];
           }
         }
       }

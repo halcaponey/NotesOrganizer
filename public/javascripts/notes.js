@@ -23,15 +23,18 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
       clickOutsideToClose: true,
       templateUrl: $location.path() + 'add-categorie-dialog-template.php',
       locals: {
+        update: $scope.update,
         name: ""
       },
       controller: DialogController
     });
-    function DialogController($scope, $mdDialog, name) {
+    function DialogController($scope, $mdDialog, name, update) {
       $scope.name = name;
       $scope.add = function() {
-        console.log($scope.name);
-        console.log(cat.id);
+        $http.post($location.path() + 'categories-ws.php', JSON.stringify({"name":$scope.name, "id_parent":cat.id})).success(function(resp) {
+          //console.log(resp);
+          update();
+        });
         $mdDialog.hide();
       }
     }
@@ -42,7 +45,46 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
   });
 
   $scope.$on('tree:edit.node', function(event, node) {
-    console.log(node);
+
+    var nodeparent = searchTree({"children": $scope.cat}, node.id_parent)
+    //console.log(nodeparent);
+    var parentEl = angular.element(document.body);
+    $mdDialog.show({
+      parent: parentEl,
+      clickOutsideToClose: true,
+      templateUrl: $location.path() + 'edit-categorie-dialog-template.php',
+      locals: {
+        update: $scope.update,
+        parent: nodeparent,
+        currentCat: node,
+        tree: $scope.cat
+      },
+      controller: DialogController
+    });
+    function DialogController($scope, $mdDialog, update, parent, currentCat, tree) {
+      $scope.currentCat = currentCat;
+      $scope.selectedNode = parent;
+      $scope.showSelected = function(sel) {
+        if (sel.id != $scope.currentCat.id) {
+          if (sel.id != $scope.selectedNode.id) {
+            $scope.selectedNode = sel;
+          } else {
+            $scope.selectedNode = {id:null};
+          }
+
+          //console.log(sel);
+        }
+      };
+      $scope.tree = tree;
+      console.log($scope.tree);
+      $scope.edit = function() {
+        $http.put($location.path() + 'categories-ws.php', JSON.stringify({"id": $scope.currentCat.id, "name":$scope.currentCat.name, "id_parent":$scope.selectedNode.id})).success(function(resp) {
+          //console.log(resp);
+          update();
+        });
+        $mdDialog.hide();
+      }
+    }
   });
 
   //automaticly reparent in php
@@ -121,6 +163,7 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
     });
     $http.get($location.path() + 'categories-ws.php').success(function(resp) {
       $scope.cat = resp;
+      console.log(resp);
     });
   };
 
