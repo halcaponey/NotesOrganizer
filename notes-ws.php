@@ -133,7 +133,6 @@ function get_all(){
       $stmt->bindParam(':idnote', $result[$i]['id']);
       $stmt->execute();
       $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      //var_dump($res);
       $result[$i]['categorie'] = $res;
     }
     echo json_encode($result);

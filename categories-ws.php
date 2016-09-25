@@ -17,7 +17,6 @@ switch ($method) {
     break;
   case 'PUT':
     $data = json_decode(file_get_contents("php://input"));
-    //var_dump($data);
     if ($data->id != null && $data->name != null){
        modify($data->id, $data->name, $data->id_parent);
     }
@@ -113,7 +112,6 @@ function get_all(){
     for ($i=0; $i < count($result); $i++) {
       for ($j=0; $j < count($result); $j++) {
         if ($result[$i]['id_parent'] == $result[$j]['id']){
-          //echo 'oui';
           if(!isset($result[$j]['children'])){
             $result[$j]['children'][0] = $result[$i];
           }else{
@@ -132,8 +130,6 @@ function get_all(){
       }
     }
 
-
-    //var_dump($result);
     echo json_encode($res);
 
     $conn = null;

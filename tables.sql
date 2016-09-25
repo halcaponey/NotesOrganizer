@@ -52,12 +52,3 @@ CREATE TABLE note_categorie(
 ALTER TABLE categorie ADD CONSTRAINT FK_categorie_id_parent FOREIGN KEY (id_parent) REFERENCES categorie(id);
 ALTER TABLE note_categorie ADD CONSTRAINT FK_note_categorie_id FOREIGN KEY (id_note) REFERENCES note(id);
 ALTER TABLE note_categorie ADD CONSTRAINT FK_note_categorie_id_categorie FOREIGN KEY (id_categorie) REFERENCES categorie(id);
-
-
-#------------------------------------------------------------
-# Test inserts
-#------------------------------------------------------------
-
-INSERT INTO note (id, title, description) VALUES (1, "oui", "oui"), (2, "non", "non");
-INSERT INTO categorie (id, name, id_parent) VALUES (1, "oui ou non", NULL), (2, "oui", 1), (3, "enfin peut etre", 2);
-INSERT INTO note_categorie (id_note, id_categorie) VALUES (1, 2), (2, 1), (1, 1);

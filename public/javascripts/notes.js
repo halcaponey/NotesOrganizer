@@ -32,7 +32,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
       $scope.name = name;
       $scope.add = function() {
         $http.post($location.path() + 'categories-ws.php', JSON.stringify({"name":$scope.name, "id_parent":cat.id})).success(function(resp) {
-          //console.log(resp);
           update();
         });
         $mdDialog.hide();
@@ -47,7 +46,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
   $scope.$on('tree:edit.node', function(event, node) {
 
     var nodeparent = searchTree({"children": $scope.cat}, node.id_parent)
-    //console.log(nodeparent);
     var parentEl = angular.element(document.body);
     $mdDialog.show({
       parent: parentEl,
@@ -71,15 +69,11 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
           } else {
             $scope.selectedNode = {id:null};
           }
-
-          //console.log(sel);
         }
       };
       $scope.tree = tree;
-      console.log($scope.tree);
       $scope.edit = function() {
         $http.put($location.path() + 'categories-ws.php', JSON.stringify({"id": $scope.currentCat.id, "name":$scope.currentCat.name, "id_parent":$scope.selectedNode.id})).success(function(resp) {
-          //console.log(resp);
           update();
         });
         $mdDialog.hide();
@@ -87,7 +81,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
     }
   });
 
-  //automaticly reparent in php
   $scope.$on('tree:delete.node', function(event, node) {
     $http.delete($location.path() + 'categories-ws.php?id='+node.id+'&id_parent='+node.id_parent).success(function(resp) {
       $scope.update();
@@ -108,9 +101,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
      return null;
   }
 
-  $scope.deleteCat = function(note){
-    console.log(node);
-  }
   $scope.edit = function(note){
     $scope.idNotesEdit = note.id;
     $scope.title = note.title;
@@ -140,7 +130,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
       });
     } else {
       $http.put($location.path() + 'notes-ws.php', JSON.stringify({"id":$scope.idNotesEdit, "title":title, "description":description, "categories":cat_ids})).success(function(resp) {
-        //console.log(resp);
         $scope.update();
       });
       $scope.idNotesEdit = -1;
@@ -163,7 +152,6 @@ app.controller('notes', function notes($scope, $location, $mdDialog, $http) {
     });
     $http.get($location.path() + 'categories-ws.php').success(function(resp) {
       $scope.cat = resp;
-      console.log(resp);
     });
   };
 
